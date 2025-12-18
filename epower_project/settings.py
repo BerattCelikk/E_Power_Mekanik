@@ -125,6 +125,8 @@ from pathlib import Path
 
 # Static dosyalar (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # BU KISIM EKSİK OLDUĞU İÇİN SİTE ÇİRKİN GÖRÜNÜYOR:
 STATICFILES_DIRS = [
