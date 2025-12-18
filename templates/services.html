@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hizmetlerimiz{% endblock %}
+
+{% block content %}
+
+   <style>
+       /* --- GENEL AYARLAR --- */
+       :root {
+           --primary-red: #d32f2f;
+           --dark-bg: #000;
+           --card-bg: rgba(255, 255, 255, 0.03);
+           --card-border: rgba(255, 255, 255, 0.1);
+           --text-muted: #aaa;
+       }
+
+       .services-main-content {
+           width: 100%;
+           overflow-x: hidden;
+           font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+           background-color: var(--dark-bg);
+           color: #fff;
+       }
+
+       /* --- 1. BANNER BÖLÜMÜ (HOME GİBİ TAM EKRAN VE NET) --- */
+       .banner-section {
+           background-image: url('{% static "images/slider1.jpeg" %}');
+           background-size: cover;
+           background-position: center center;
+           background-repeat: no-repeat;
+           position: relative;
+           height: 100vh; /* Home ile aynı yükseklik */
+           min-height: 700px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding-top: 100px;
+       }
+       
+       /* Overlay İPTAL EDİLDİ (Resim orijinal kalsın diye) */
+       .banner-section::before {
+           content: none; 
+       }
+       
+       .banner-section .container { position: relative; z-index: 2; }
+
+       /* Banner Yazıları */
+       .custom-title-wrapper {
+           display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+           line-height: 1.1; margin-bottom: 30px; padding-left: 15px; border-left: 5px solid var(--primary-red);
+       }
+       /* Yazıların okunması için text-shadow ekledik (Home'daki gibi) */
+       .title-solid { 
+           font-size: 4.5rem; font-weight: 800; color: #fff; display: block; margin-bottom: 5px; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+       }
+       .title-outline { 
+           font-size: 4.5rem; font-weight: 800; color: transparent; -webkit-text-stroke: 2px #fff; display: block; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+       }
+       .banner-desc { 
+           font-size: 1.2rem; color: #fff; line-height: 1.6; max-width: 700px; margin-top: 20px; padding-left: 20px; text-align: left; font-weight: 500;
+           text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+       }
+       
+       .header-social-share { position: absolute; bottom: 50px; right: 50px; z-index: 10; }
+       .header-social-share a { color: #fff; font-size: 1.5rem; transition: 0.3s; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+       .header-social-share a:hover { color: var(--primary-red); }
+
+
+       /* --- 2. HİZMETLER GRID ALANI (MODERN KARTLAR) --- */
+       .services-section {
+           position: relative;
+           padding: 120px 0;
+           background-image: url('{% static "images/slider2.png" %}');
+           background-size: cover;
+           background-position: center;
+           background-attachment: fixed; /* Parallax Etkisi */
+       }
+
+       /* Koyu Glassmorphism Arka Plan Perdesi */
+       .services-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.85); /* Arka planı iyice karart ki kartlar parlasın */
+           backdrop-filter: blur(5px);
+           z-index: 0;
+       }
+       .services-section .container { position: relative; z-index: 2; }
+
+       /* --- KART TASARIMI --- */
+       .service-card-modern {
+           background: var(--card-bg);
+           border: 1px solid var(--card-border);
+           border-radius: 20px;
+           padding: 50px 40px;
+           margin-bottom: 30px;
+           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+           position: relative;
+           overflow: hidden;
+           height: 100%;
+           display: flex;
+           flex-direction: column;
+       }
+
+       /* Kart Hover Efektleri */
+       .service-card-modern:hover {
+           transform: translateY(-15px);
+           background: rgba(255, 255, 255, 0.08); /* Biraz daha aydınlık */
+           border-color: var(--primary-red);
+           box-shadow: 0 20px 50px rgba(211, 47, 47, 0.15); /* Kırmızımsı gölge */
+       }
+
+       /* Arka Plan Numarası (01, 02...) */
+       .bg-number {
+           position: absolute;
+           top: -20px;
+           right: -10px;
+           font-size: 8rem;
+           font-weight: 900;
+           color: rgba(255, 255, 255, 0.03);
+           z-index: 0;
+           transition: 0.4s;
+           pointer-events: none;
+       }
+       .service-card-modern:hover .bg-number {
+           color: rgba(211, 47, 47, 0.1);
+           transform: scale(1.1);
+       }
+
+       /* İkon Kutusu */
+       .service-icon-box {
+           width: 80px; height: 80px;
+           background: rgba(255, 255, 255, 0.05);
+           border-radius: 15px;
+           display: flex; align-items: center; justify-content: center;
+           margin-bottom: 30px;
+           transition: 0.4s;
+           position: relative;
+           z-index: 1;
+           border: 1px solid rgba(255,255,255,0.1);
+       }
+       .service-icon-box i {
+           font-size: 2.5rem;
+           color: #fff;
+           transition: 0.4s;
+       }
+       
+       /* Hoverda İkon */
+       .service-card-modern:hover .service-icon-box {
+           background: var(--primary-red);
+           border-color: var(--primary-red);
+           transform: rotateY(180deg);
+       }
+       .service-card-modern:hover .service-icon-box i {
+           transform: rotateY(-180deg); /* İkon düz kalsın */
+       }
+
+       /* Başlıklar ve Metin */
+       .service-content { position: relative; z-index: 1; flex-grow: 1; }
+       
+       .service-cat {
+           font-size: 0.8rem; font-weight: 700; color: var(--primary-red); 
+           text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block;
+       }
+       
+       .service-head {
+           font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 20px;
+       }
+       
+       .service-txt {
+           color: var(--text-muted); line-height: 1.7; margin-bottom: 30px; font-size: 1rem;
+       }
+
+       /* Özellik Listesi */
+       .service-features {
+           list-style: none; padding: 0; margin-bottom: 35px;
+       }
+       .service-features li {
+           display: flex; align-items: center; margin-bottom: 12px; 
+           font-weight: 500; color: #ddd; font-size: 0.95rem;
+           transition: 0.3s;
+       }
+       .service-features li i {
+           color: var(--primary-red); margin-right: 12px; font-size: 0.9rem;
+       }
+       .service-card-modern:hover .service-features li { color: #fff; padding-left: 5px; }
+
+       /* Buton */
+       .btn-modern-arrow {
+           color: #fff; font-weight: 700; text-decoration: none; 
+           display: inline-flex; align-items: center; font-size: 1rem; 
+           transition: 0.3s; position: relative; z-index: 1;
+           border-bottom: 2px solid transparent; padding-bottom: 2px;
+       }
+       .btn-modern-arrow i { margin-left: 10px; transition: 0.3s; }
+       
+       .service-card-modern:hover .btn-modern-arrow { color: var(--primary-red); border-bottom-color: var(--primary-red); }
+       .service-card-modern:hover .btn-modern-arrow i { transform: translateX(8px); }
+
+
+       /* --- MOBİL AYARLARI --- */
+       @media (max-width: 991px) {
+           .banner-section { min-height: 500px; padding-top: 80px; text-align: center; }
+           .custom-title-wrapper { align-items: center; text-align: center; padding-left: 0; border-left: none; }
+           .title-solid { font-size: 2.5rem !important; }
+           .title-outline { font-size: 2.5rem !important; }
+           .banner-desc { font-size: 1rem !important; padding: 0 15px; text-align: center; }
+           
+           .services-section { padding: 60px 0; }
+           .service-card-modern { padding: 30px 25px; }
+       }
+   </style>
+
+   <div class="services-main-content">
+
+       <div class="banner-section">
+            <div class="container">
+                <div class="custom-title-wrapper">
+                    <span class="title-solid">Profesyonel</span>
+                    <span class="title-outline">Mühendislik</span>
+                    <span class="title-outline">Çözümleri</span>
+                </div>
+                <p class="banner-desc">
+                    Fikir aşamasından seri üretime kadar, ihtiyaç duyduğunuz tüm mühendislik süreçlerinde yanınızdayız. <br> Tasarım, analiz ve üretimde mükemmellik.
+                </p>
+            </div>
+            
+            <div class="header-social-share">
+                <ul>
+                    <li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <a href="#" class="hero__scroll"><svg width="15" height="22.1"><use xlink:href="#arrow"></use></svg></a>
+       </div>
+
+       <div class="services-section">
+           <div class="container">
+               <div class="row">
+                   
+                   <div class="col-lg-6 col-md-12 mb-5">
+                       <div class="service-card-modern">
+                           <span class="bg-number">01</span>
+                           
+                           <div class="service-icon-box">
+                               <i class="fas fa-pencil-ruler"></i>
+                           </div>
+                           
+                           <div class="service-content">
+                               <span class="service-cat">Mühendislik</span>
+                               <h3 class="service-head">Tasarım</h3>
+                               <p class="service-txt">
+                                   Mekanik sistemlerin konsept aşamasından detaylı 3D modellemesine kadar tüm tasarım süreçlerini profesyonel CAD yazılımları ile gerçekleştiriyoruz.
+                               </p>
+                               <ul class="service-features">
+                                   <li><i class="fas fa-check"></i> 3D CAD Modelleme (SolidWorks, CATIA)</li>
+                                   <li><i class="fas fa-check"></i> Konsept ve Endüstriyel Tasarım</li>
+                                   <li><i class="fas fa-check"></i> Teknik Resim ve Dokümantasyon</li>
+                               </ul>
+                               <a href="{% url 'contact' %}" class="btn-modern-arrow">Teklif Al <i class="fas fa-long-arrow-alt-right"></i></a>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="col-lg-6 col-md-12 mb-5">
+                       <div class="service-card-modern">
+                           <span class="bg-number">02</span>
+                           
+                           <div class="service-icon-box">
+                               <i class="fas fa-chart-line"></i>
+                           </div>
+                           
+                           <div class="service-content">
+                               <span class="service-cat">Simülasyon</span>
+                               <h3 class="service-head">Analiz</h3>
+                               <p class="service-txt">
+                                   Ürünlerin sanal ortamda test edilerek dayanıklılık, ömür ve performans değerlerinin doğrulanması. Fiziksel prototip maliyetlerini düşürür.
+                               </p>
+                               <ul class="service-features">
+                                   <li><i class="fas fa-check"></i> Yapısal Analiz (FEA)</li>
+                                   <li><i class="fas fa-check"></i> Akışkanlar Dinamiği (CFD)</li>
+                                   <li><i class="fas fa-check"></i> Titreşim ve Yorulma Analizleri</li>
+                               </ul>
+                               <a href="{% url 'contact' %}" class="btn-modern-arrow">Teklif Al <i class="fas fa-long-arrow-alt-right"></i></a>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="col-lg-6 col-md-12 mb-5">
+                       <div class="service-card-modern">
+                           <span class="bg-number">03</span>
+                           
+                           <div class="service-icon-box">
+                               <i class="fas fa-cogs"></i>
+                           </div>
+                           
+                           <div class="service-content">
+                               <span class="service-cat">İmalat</span>
+                               <h3 class="service-head">Üretim</h3>
+                               <p class="service-txt">
+                                   Tasarlanan parçaların en uygun imalat yöntemleri (talaşlı imalat, döküm, sac şekillendirme) ile hayata geçirilmesi. Prototip ve seri üretim.
+                               </p>
+                               <ul class="service-features">
+                                   <li><i class="fas fa-check"></i> CNC İşleme ve Talaşlı İmalat</li>
+                                   <li><i class="fas fa-check"></i> Hızlı Prototipleme (3D Baskı)</li>
+                                   <li><i class="fas fa-check"></i> Montaj ve Entegrasyon</li>
+                               </ul>
+                               <a href="{% url 'contact' %}" class="btn-modern-arrow">Teklif Al <i class="fas fa-long-arrow-alt-right"></i></a>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="col-lg-6 col-md-12 mb-5">
+                       <div class="service-card-modern">
+                           <span class="bg-number">04</span>
+                           
+                           <div class="service-icon-box">
+                               <i class="fas fa-clipboard-check"></i>
+                           </div>
+                           
+                           <div class="service-content">
+                               <span class="service-cat">Yönetim</span>
+                               <h3 class="service-head">Projelendirme</h3>
+                               <p class="service-txt">
+                                   Mühendislik projelerinizin baştan sona planlanması, maliyet analizi ve yönetimi. AR-GE projeleri ve devlet destekleri için danışmanlık.
+                               </p>
+                               <ul class="service-features">
+                                   <li><i class="fas fa-check"></i> Proje Yönetimi ve Planlama</li>
+                                   <li><i class="fas fa-check"></i> Maliyet Analizi ve Optimizasyon</li>
+                                   <li><i class="fas fa-check"></i> Teknik Danışmanlık</li>
+                               </ul>
+                               <a href="{% url 'contact' %}" class="btn-modern-arrow">Teklif Al <i class="fas fa-long-arrow-alt-right"></i></a>
+                           </div>
+                       </div>
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+   </div>
+
+{% endblock %}

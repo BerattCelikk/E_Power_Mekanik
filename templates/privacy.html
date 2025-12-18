@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gizlilik Politikası - E-Power Mekanik{% endblock %}
+
+{% block content %}
+
+   <style>
+       /* --- GENEL AYARLAR --- */
+       :root {
+           --primary-red: #d32f2f;
+           --dark-bg: #000;
+           --glass-bg: rgba(255, 255, 255, 0.05);
+           --glass-border: rgba(255, 255, 255, 0.1);
+       }
+
+       .privacy-main-content {
+           width: 100%;
+           overflow-x: hidden;
+           background-color: var(--dark-bg);
+           color: #fff;
+           font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+       }
+
+       /* --- 1. BANNER BÖLÜMÜ (TAM EKRAN) --- */
+       .banner-section {
+           background-image: url('{% static "images/slider1.jpeg" %}');
+           background-size: cover;
+           background-position: center center;
+           background-repeat: no-repeat;
+           position: relative;
+           height: 100vh;
+           min-height: 700px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding-top: 100px;
+       }
+       
+       /* Banner Overlay (Hafif Karartma) */
+       .banner-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.4);
+           z-index: 0;
+       }
+       .banner-section .container { position: relative; z-index: 2; }
+
+       /* Banner Yazıları */
+       .custom-title-wrapper {
+           display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+           line-height: 1.1; margin-bottom: 30px; padding-left: 15px; border-left: 5px solid var(--primary-red);
+       }
+       .title-solid { 
+           font-size: 4.5rem; font-weight: 800; color: #fff; display: block; margin-bottom: 5px; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+       }
+       .title-outline { 
+           font-size: 4.5rem; font-weight: 800; color: transparent; -webkit-text-stroke: 1.5px #fff; display: block; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+       }
+       .banner-desc { 
+           font-size: 1.2rem; color: #fff; line-height: 1.6; max-width: 700px; margin-top: 20px; padding-left: 20px; text-align: left; font-weight: 500;
+           text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+       }
+       
+       .header-social-share { position: absolute; bottom: 50px; right: 50px; z-index: 10; }
+
+       /* --- 2. İÇERİK BÖLÜMÜ (SLIDER2 ARKA PLAN) --- */
+       .privacy-body-section {
+           position: relative;
+           padding: 120px 0;
+           background-image: url('{% static "images/slider2.png" %}');
+           background-size: cover;
+           background-position: center;
+           background-attachment: fixed; /* Parallax Etkisi */
+       }
+
+       /* Koyu Cam Perde */
+       .privacy-body-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.85);
+           backdrop-filter: blur(5px);
+           z-index: 0;
+       }
+       .privacy-body-section .container { position: relative; z-index: 2; }
+
+       /* Glassmorphism Gizlilik Kutusu */
+       .privacy-glass-card {
+           background: var(--glass-bg);
+           border: 1px solid var(--glass-border);
+           border-radius: 25px;
+           padding: 80px 60px;
+           box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+           backdrop-filter: blur(10px);
+           -webkit-backdrop-filter: blur(10px);
+       }
+
+       .privacy-title-main {
+           font-weight: 800; font-size: 2.5rem; color: #fff; margin-bottom: 40px;
+           border-bottom: 2px solid var(--primary-red); display: inline-block; padding-bottom: 10px;
+       }
+
+       .privacy-sub-title {
+           font-weight: 700; color: var(--primary-red); margin-top: 40px; margin-bottom: 20px;
+           text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem;
+       }
+
+       .privacy-text {
+           color: #ccc; line-height: 1.8; font-size: 1.1rem; margin-bottom: 20px;
+       }
+
+       .privacy-footer-info {
+           margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--glass-border);
+           font-style: italic; color: #888; font-size: 0.95rem;
+       }
+
+       /* --- MOBİL AYARLARI --- */
+       @media (max-width: 991px) {
+           .banner-section { min-height: 500px; text-align: center; }
+           .custom-title-wrapper { align-items: center; text-align: center; padding-left: 0; border-left: none; }
+           .title-solid, .title-outline { font-size: 2.5rem !important; }
+           .banner-desc { font-size: 1rem !important; padding: 0 15px; }
+           
+           .privacy-body-section { padding: 60px 0; }
+           .privacy-glass-card { padding: 40px 25px; }
+           .privacy-title-main { font-size: 1.8rem; }
+       }
+   </style>
+
+   <div class="privacy-main-content">
+
+       <div class="banner-section">
+            <div class="container">
+                <div class="custom-title-wrapper">
+                    <span class="title-solid">Gizlilik</span>
+                    <span class="title-outline">Politikası</span>
+                </div>
+                <p class="banner-desc">
+                    Kişisel verilerinizin korunması ve gizlilik ilkelerimiz hakkında detaylı bilgilendirme.
+                </p>
+            </div>
+            
+            <div class="header-social-share">
+                <ul>
+                    <li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <a href="#" class="hero__scroll"><svg width="15" height="22.1"><use xlink:href="#arrow"></use></svg></a>
+       </div>
+
+       <div class="privacy-body-section">
+           <div class="container">
+               <div class="row justify-content-center">
+                   <div class="col-lg-10">
+                       
+                       <div class="privacy-glass-card">
+                           <h2 class="privacy-title-main">Gizlilik Bildirimi</h2>
+                           
+                           <p class="privacy-text">
+                               <strong>Gizlilik politikası</strong>, bir tarafın müşteri veya müşterisinin verilerini nasıl topladığını, kullandığını, açıkladığını ve yönettiğini açıklayan bir bildirim veya hukuki belgedir. E-Power Mekanik olarak, verilerinizin güvenliğini sağlamak en büyük önceliğimizdir.
+                           </p>
+
+                           <h3 class="privacy-sub-title">Yasal Gereklilikler ve Kapsam</h3>
+                           <p class="privacy-text">
+                               Bir işletme söz konusu olduğunda, gizlilik politikası genellikle bir tarafın topladığı kişisel bilgileri nasıl topladığı, sakladığı ve açıkladığına dair politikayı belirten bir beyandır. Bu bildirim, müşteriye hangi bilgilerin toplandığını ve bu bilgilerin gizli tutulup tutulmayacağını, iş ortaklarıyla paylaşılıp paylaşılmayacağını veya üçüncü taraflara sunulup sunulmayacağını bildirir.
+                           </p>
+                           <p class="privacy-text">
+                               Belirli bir gizlilik politikasının içeriği, geçerli yasalara bağlı olarak değişecektir ve coğrafi sınırlar ile yasal yargı alanlarındaki gereksinimlere hitap etmesi gerekebilir. Avrupa'daki veri koruma yasaları (GDPR) ve Türkiye'deki KVKK, bu kapsamdaki temel yönergelerimizdir.
+                           </p>
+
+                           <h3 class="privacy-sub-title">Tarihsel Gelişim ve Standartlar</h3>
+                           <p class="privacy-text">
+                               1968 yılında, Avrupa Konseyi teknolojinin insan hakları üzerindeki etkilerini incelemeye başladı ve bilgisayar teknolojisinin veri iletimindeki tehditlerini tanıdı. Bu süreç, 1981'de Kişisel Verilerin Otomatik İşlenmesiyle İlgili Bireylerin Korunması Sözleşmesi'nin tanıtılmasına yol açtı. Şirketimiz, bu tarihsel bilinç ve modern standartlar ışığında veri politikasını yürütmektedir.
+                           </p>
+
+                           <h3 class="privacy-sub-title">Uluslararası Uyum (ABD ve Kanada)</h3>
+                           <p class="privacy-text">
+                               Amerika Birleşik Devletleri'nde 1974 Gizlilik Yasası ve Kanada'da 1977 Kanada Gizlilik Komiseri'nin kuruluşu gibi dönüm noktaları, küresel veri güvenliği standartlarını belirlemiştir. E-Power Mekanik, dijital varlıklarını bu evrensel gizlilik standartlarına uyumlu şekilde yönetmektedir.
+                           </p>
+
+                           <div class="privacy-footer-info">
+                               * Bu metin bilgilendirme amaçlıdır. Gizlilik uygulamalarımız hakkında sorularınız için 
+                               <a href="mailto:info@epowermekanik.com" style="color: var(--primary-red); font-weight: 700; text-decoration: none;">info@epowermekanik.com</a> 
+                               adresinden bizimle iletişime geçebilirsiniz. <br>
+                               <strong>Son Güncelleme: 2025</strong>
+                           </div>
+                       </div>
+
+                   </div>
+               </div>
+           </div>
+       </div>
+
+   </div>
+
+{% endblock %}

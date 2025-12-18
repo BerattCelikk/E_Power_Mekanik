@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Şartlar ve Koşullar - E-Power Mekanik{% endblock %}
+
+{% block content %}
+
+   <style>
+       /* --- GENEL AYARLAR --- */
+       :root {
+           --primary-red: #d32f2f;
+           --dark-bg: #000;
+           --glass-bg: rgba(255, 255, 255, 0.05);
+           --glass-border: rgba(255, 255, 255, 0.1);
+       }
+
+       .terms-main-content {
+           width: 100%;
+           overflow-x: hidden;
+           background-color: var(--dark-bg);
+           color: #fff;
+           font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+       }
+
+       /* --- 1. BANNER BÖLÜMÜ (HOME GİBİ TAM EKRAN) --- */
+       .banner-section {
+           background-image: url('{% static "images/slider1.jpeg" %}');
+           background-size: cover;
+           background-position: center center;
+           background-repeat: no-repeat;
+           position: relative;
+           height: 100vh;
+           min-height: 700px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding-top: 100px;
+       }
+       
+       /* Banner Overlay (Hafif Karartma) */
+       .banner-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.4);
+           z-index: 0;
+       }
+       .banner-section .container { position: relative; z-index: 2; }
+
+       /* Banner Yazıları */
+       .custom-title-wrapper {
+           display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+           line-height: 1.1; margin-bottom: 30px; padding-left: 15px; border-left: 5px solid var(--primary-red);
+       }
+       .title-solid { 
+           font-size: 4.5rem; font-weight: 800; color: #fff; display: block; margin-bottom: 5px; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+       }
+       .title-outline { 
+           font-size: 4.5rem; font-weight: 800; color: transparent; -webkit-text-stroke: 1.5px #fff; display: block; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+       }
+       .banner-desc { 
+           font-size: 1.2rem; color: #fff; line-height: 1.6; max-width: 700px; margin-top: 20px; padding-left: 20px; text-align: left; font-weight: 500;
+           text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+       }
+       
+       .header-social-share { position: absolute; bottom: 50px; right: 50px; z-index: 10; }
+
+       /* --- 2. İÇERİK BÖLÜMÜ (SLIDER2 ARKA PLAN) --- */
+       .terms-body-section {
+           position: relative;
+           padding: 120px 0;
+           background-image: url('{% static "images/slider2.png" %}');
+           background-size: cover;
+           background-position: center;
+           background-attachment: fixed; /* Parallax Etkisi */
+       }
+
+       /* Koyu Cam Perde */
+       .terms-body-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.85);
+           backdrop-filter: blur(5px);
+           z-index: 0;
+       }
+       .terms-body-section .container { position: relative; z-index: 2; }
+
+       /* Glassmorphism Şartlar Kutusu */
+       .terms-glass-card {
+           background: var(--glass-bg);
+           border: 1px solid var(--glass-border);
+           border-radius: 25px;
+           padding: 80px 60px;
+           box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+           backdrop-filter: blur(10px);
+           -webkit-backdrop-filter: blur(10px);
+       }
+
+       .terms-title-main {
+           font-weight: 800; font-size: 2.5rem; color: #fff; margin-bottom: 40px;
+           border-bottom: 2px solid var(--primary-red); display: inline-block; padding-bottom: 10px;
+       }
+
+       .terms-sub-title {
+           font-weight: 700; color: var(--primary-red); margin-top: 40px; margin-bottom: 20px;
+           text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem;
+       }
+
+       .terms-text {
+           color: #ccc; line-height: 1.8; font-size: 1.1rem; margin-bottom: 20px;
+       }
+
+       /* Liste Tasarımı */
+       .terms-list { list-style: none; padding: 0; margin-bottom: 25px; }
+       .terms-list li {
+           display: flex; align-items: flex-start; margin-bottom: 12px; color: #ddd; font-weight: 500;
+       }
+       .terms-list li::before {
+           content: '▹'; color: var(--primary-red); margin-right: 15px; font-size: 1.3rem; line-height: 1.4;
+       }
+
+       .terms-sub-list { list-style: none; padding-left: 30px; margin-top: 10px; }
+       .terms-sub-list li::before { content: '○'; font-size: 0.9rem; }
+
+       .terms-footer-info {
+           margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--glass-border);
+           font-style: italic; color: #888; font-size: 0.95rem;
+       }
+
+       /* --- MOBİL AYARLARI --- */
+       @media (max-width: 991px) {
+           .banner-section { min-height: 500px; text-align: center; }
+           .custom-title-wrapper { align-items: center; text-align: center; padding-left: 0; border-left: none; }
+           .title-solid, .title-outline { font-size: 2.5rem !important; }
+           .banner-desc { font-size: 1rem !important; padding: 0 15px; }
+           
+           .terms-body-section { padding: 60px 0; }
+           .terms-glass-card { padding: 40px 25px; }
+           .terms-title-main { font-size: 1.8rem; }
+       }
+   </style>
+
+   <div class="terms-main-content">
+
+       <div class="banner-section">
+            <div class="container">
+                <div class="custom-title-wrapper">
+                    <span class="title-outline">Şartlar ve</span>
+                    <span class="title-solid">Koşullar</span>
+                </div>
+                <p class="banner-desc">
+                    Web sitemizi kullanırken tabi olduğunuz yasal hükümler, kullanım hakları ve sorumluluklar hakkında detaylı bilgilendirme.
+                </p>
+            </div>
+            
+            <div class="header-social-share">
+                <ul>
+                    <li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <a href="#" class="hero__scroll"><svg width="15" height="22.1"><use xlink:href="#arrow"></use></svg></a>
+       </div>
+
+       <div class="terms-body-section">
+           <div class="container">
+               <div class="row justify-content-center">
+                   <div class="col-lg-10">
+                       
+                       <div class="terms-glass-card">
+                           <h2 class="terms-title-main">Kullanım Şartları</h2>
+                           
+                           <p class="terms-text">
+                               <strong>Şartlar ve Koşullar</strong>, E-Power Mekanik (hizmet sağlayıcı) ile hizmetlerimizi kullanmak isteyen kullanıcılar arasında yapılan hukuki bir anlaşmadır. Web sitemize erişim sağlayarak ve hizmetlerimizi kullanarak, bu sayfada belirtilen tüm şartları kabul etmiş sayılırsınız.
+                           </p>
+
+                           <h3 class="terms-sub-title">Anlaşma Kapsamı ve Konular</h3>
+                           <p class="terms-text">Bir şartlar ve koşullar anlaşması genellikle aşağıdaki temel unsurları içerir:</p>
+                           
+                           <ul class="terms-list">
+                               <li>Anahtar kelimeler ve ifadelerin hukuki tanımları</li>
+                               <li>Kullanıcı hakları ve sorumlulukları
+                                   <ul class="terms-list terms-sub-list">
+                                       <li>Hizmetlerin doğru ve etik kullanımı; kötüye kullanımın sınırları</li>
+                                       <li>Çevrimiçi eylemler ve davranışlar için hesap verebilirlik</li>
+                                       <li>Gizlilik politikası ve kişisel verilerin korunması uyumu</li>
+                                       <li>Varsa üyelik, abonelik ve ödeme prosedürleri</li>
+                                       <li>Uyuşmazlık çözüm süreci ve dava haklarına ilişkin sınırlamalar</li>
+                                   </ul>
+                               </li>
+                               <li>Feragatname ve Sorumluluk Sınırlaması hükümleri</li>
+                               <li>Şartlarda yapılacak değişikliklerin bildirim yöntemleri</li>
+                           </ul>
+
+                           <h3 class="terms-sub-title">Yasal Sorumluluk ve Güncellemeler</h3>
+                           <p class="terms-text">
+                               E-Power Mekanik, sunulan içeriğin doğruluğunu sağlamak için makul çabayı gösterir ancak sitedeki bilgilerin eksiksizliği konusunda garanti vermez. Şirketimiz, bu şartları önceden haber vermeksizin güncelleme hakkını saklı tutar. Sitenin kullanımı sırasında oluşabilecek teknik aksaklıklardan dolayı şirketimiz sorumlu tutulamaz.
+                           </p>
+
+                           <div class="terms-footer-info">
+                               * Bu metin yasal bilgilendirme amaçlıdır. Kullanım şartları hakkında sorularınız için 
+                               <a href="mailto:info@epowermekanik.com" style="color: var(--primary-red); font-weight: 700; text-decoration: none;">info@epowermekanik.com</a> 
+                               üzerinden bize ulaşabilirsiniz. <br>
+                               <strong>Son Güncelleme: 2025</strong>
+                           </div>
+                       </div>
+
+                   </div>
+               </div>
+           </div>
+       </div>
+
+   </div>
+
+{% endblock %}

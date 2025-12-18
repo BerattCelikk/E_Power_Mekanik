@@ -56,7 +56,7 @@ ROOT_URLCONF = 'epower_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,7 +117,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+import os
+from pathlib import Path
+
+# Projenin ana dizinini garantiye alıyoruz
+#BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Static dosyalar (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+
+# BU KISIM EKSİK OLDUĞU İÇİN SİTE ÇİRKİN GÖRÜNÜYOR:
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+# Resim yüklemeleri için (Media)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

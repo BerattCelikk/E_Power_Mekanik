@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ürünlerimiz{% endblock %}
+
+{% block content %}
+
+   <style>
+       /* --- GENEL AYARLAR --- */
+       :root {
+           --primary-red: #d32f2f;
+           --dark-bg: #000;
+           --glass-bg: rgba(255, 255, 255, 0.05);
+           --glass-border: rgba(255, 255, 255, 0.1);
+       }
+
+       .products-main-content {
+           width: 100%;
+           overflow-x: hidden;
+           background-color: var(--dark-bg);
+           color: #fff;
+       }
+
+       /* --- BANNER ARKA PLAN AYARLARI --- */
+       .banner-section {
+           background-image: url('{% static "images/slider1.jpeg" %}');
+           background-size: cover;
+           background-position: center center;
+           background-repeat: no-repeat;
+           position: relative;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           min-height: 700px;
+           padding-top: 100px;
+       }
+       
+       /* Banner'da Orijinal Parlaklık İçin Overlay Kapalı */
+       .banner-section::before { content: none; }
+
+       /* --- ÖZEL BANNER YAZI TASARIMI --- */
+       .custom-title-wrapper {
+           display: flex;
+           flex-direction: column;
+           align-items: flex-start;
+           justify-content: center;
+           line-height: 1.1;
+           margin-bottom: 30px;
+           padding-left: 15px;
+           position: relative;
+           z-index: 2;
+           border-left: 5px solid var(--primary-red);
+       }
+
+       .title-solid {
+           font-size: 4.5rem; font-weight: 800; color: #fff; display: block; margin-bottom: 5px;
+           text-shadow: 2px 2px 15px rgba(0,0,0,0.7);
+       }
+
+       .title-outline {
+           font-size: 4.5rem; font-weight: 800; color: transparent; -webkit-text-stroke: 1.5px #fff; 
+           display: block; text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+       }
+       
+       .banner-desc {
+           font-size: 1.2rem; color: #fff; line-height: 1.6; max-width: 800px; margin-top: 20px;
+           padding-left: 15px; text-align: left; text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+           position: relative; z-index: 2; font-weight: 500;
+       }
+       
+       .header-social-share { position: absolute; bottom: 50px; right: 50px; z-index: 10; }
+
+       /* --- ÜRÜN BÖLÜMÜ (KOYU GLASSMORPHISM) --- */
+       .products-section {
+           position: relative;
+           padding: 120px 0;
+           background-image: url('{% static "images/slider2.png" %}');
+           background-size: cover;
+           background-position: center;
+           background-attachment: fixed;
+       }
+
+       /* Koyu Perde */
+       .products-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.85); /* Arka planı iyice karartıyoruz */
+           z-index: 0;
+       }
+
+       .products-section .container { position: relative; z-index: 2; }
+
+       /* --- MODERN ÜRÜN KARTI --- */
+       .product-card {
+           background: var(--glass-bg);
+           backdrop-filter: blur(15px); /* Buzlu cam efekti */
+           -webkit-backdrop-filter: blur(15px);
+           border: 1px solid var(--glass-border);
+           border-radius: 25px;
+           overflow: hidden;
+           margin-bottom: 100px;
+           box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+           transition: all 0.4s ease;
+       }
+       
+       .product-card:hover {
+           transform: translateY(-10px);
+           border-color: var(--primary-red);
+           box-shadow: 0 30px 60px rgba(211, 47, 47, 0.15);
+       }
+       
+       /* Zikzak Yapı */
+       .product-card.reverse .row { flex-direction: row-reverse; }
+
+       /* Görsel Alanı */
+       .product-media {
+           position: relative; width: 100%; height: 100%; min-height: 500px; overflow: hidden;
+       }
+       .product-media img {
+           width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease;
+       }
+       .product-card:hover .product-media img { transform: scale(1.08); }
+
+       /* İçerik Alanı */
+       .product-details {
+           padding: 70px 60px; display: flex; flex-direction: column; justify-content: center; height: 100%;
+       }
+       .product-category {
+           font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: var(--primary-red);
+           margin-bottom: 15px; font-weight: 700;
+       }
+       .product-title {
+           font-size: 3rem; font-weight: 800; margin-bottom: 25px; color: #fff; line-height: 1.1;
+       }
+       .product-desc {
+           color: #ccc; line-height: 1.8; margin-bottom: 35px; font-size: 1.05rem;
+       }
+
+       /* Teknik Liste */
+       .tech-specs { list-style: none; padding: 0; margin-bottom: 40px; }
+       .tech-specs li {
+           display: flex; align-items: center; margin-bottom: 15px; color: #eee; font-weight: 500; font-size: 1rem;
+       }
+       .tech-specs li i {
+           color: var(--primary-red); margin-right: 15px; font-size: 1.2rem;
+       }
+
+       /* Buton */
+       .btn-product {
+           background-color: #fff; color: #000; padding: 18px 45px; border-radius: 40px;
+           text-decoration: none; font-weight: 700; display: inline-flex; align-items: center;
+           transition: 0.3s; align-self: flex-start; text-transform: uppercase; letter-spacing: 1px;
+       }
+       .btn-product:hover {
+           background-color: var(--primary-red); color: #fff; transform: translateX(8px);
+       }
+       .btn-product i { margin-left: 12px; font-size: 0.9rem; }
+
+
+       /* --- MOBİL AYARLARI --- */
+       @media (max-width: 991px) {
+           .banner-section { min-height: 550px; text-align: center; }
+           .custom-title-wrapper { align-items: center; text-align: center; padding-left: 0; border-left: none; }
+           .title-solid, .title-outline { font-size: 2.8rem !important; }
+           .banner-desc { font-size: 1rem !important; padding: 0 15px; text-align: center; }
+           
+           .products-section { padding: 80px 0; }
+           .product-details { padding: 45px 30px; text-align: center; }
+           .product-title { font-size: 2.2rem; }
+           .product-media { min-height: 350px; }
+           .product-card.reverse .row { flex-direction: row; }
+           .btn-product { align-self: center; }
+           .tech-specs li { justify-content: center; }
+       }
+   </style>
+
+   <div class="products-main-content">
+
+       <div class="banner-section">
+            <div class="container">
+                <div class="custom-title-wrapper">
+                    <span class="title-solid">Yenilikçi</span>
+                    <span class="title-outline">Ürünlerimiz</span>
+                    <span class="title-outline">ve Çözümler</span>
+                </div>
+                <p class="banner-desc">
+                    Yerli mühendislik, ileri teknoloji ve yüksek performanslı güç aktarım çözümleri ile geleceğin teknolojisine yön veriyoruz.
+                </p>
+            </div>
+            
+            <div class="header-social-share">
+                <ul>
+                    <li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <a href="#" class="hero__scroll"><svg width="15" height="22.1"><use xlink:href="#arrow"></use></svg></a>
+       </div>
+
+       <div class="products-section">
+           <div class="container">
+               
+               <div class="product-card">
+                   <div class="row no-gutters">
+                       <div class="col-lg-6">
+                           <div class="product-media">
+                               {% if products.0.image %}
+                                   <img src="{{ products.0.image.url }}" alt="{{ products.0.title }}">
+                               {% else %}
+                                   <img src="{% static 'images/slider1.jpeg' %}" alt="E-Power Dişli Kutusu"> 
+                               {% endif %}
+                           </div>
+                       </div>
+                       <div class="col-lg-6">
+                           <div class="product-details">
+                               <span class="product-category">Güç Aktarım</span>
+                               <h2 class="product-title">E-Power Dişli Kutusu</h2>
+                               <p class="product-desc">
+                                   Elektrikli araçlar için özel olarak tasarlanmış, yüksek tork kapasitesine sahip ve sessiz çalışma prensibiyle üretilen yerli şanzıman kutusu. Maksimum verimlilik için optimize edilmiştir.
+                               </p>
+
+                               <ul class="tech-specs">
+                                   <li><i class="fas fa-check-circle"></i> Yüksek Tork Kapasitesi (450 Nm)</li>
+                                   <li><i class="fas fa-check-circle"></i> %98'e Varan Verimlilik</li>
+                                   <li><i class="fas fa-check-circle"></i> Ultra Sessiz Dişli Teknolojisi</li>
+                                   <li><i class="fas fa-check-circle"></i> Hafif Alüminyum Alaşım Gövde</li>
+                               </ul>
+
+                               <a href="{% url 'gearbox_detail' %}" class="btn-product">
+                                   <span>Detaylı Bilgi Al</span> <i class="fas fa-arrow-right"></i>
+                               </a>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+               <div class="product-card reverse">
+                   <div class="row no-gutters">
+                       <div class="col-lg-6">
+                           <div class="product-media">
+                               {% if products.1.image %}
+                                   <img src="{{ products.1.image.url }}" alt="{{ products.1.title }}">
+                               {% else %}
+                                   <img src="{% static 'images/slider2.png' %}" alt="E-Power Diferansiyel">
+                               {% endif %}
+                           </div>
+                       </div>
+                       <div class="col-lg-6">
+                           <div class="product-details">
+                               <span class="product-category">Aktarma Organları</span>
+                               <h2 class="product-title">E-Power Diferansiyel</h2>
+                               <p class="product-desc">
+                                   Milli imkanlarla geliştirilen elektronik kilitli diferansiyel sistemi. Zorlu yol koşullarında üstün yol tutuş ve viraj performansı sağlar. Modüler yapısı ile farklı araçlara entegre edilebilir.
+                               </p>
+
+                               <ul class="tech-specs">
+                                   <li><i class="fas fa-check-circle"></i> Elektronik Kilit Sistemi (e-LSD)</li>
+                                   <li><i class="fas fa-check-circle"></i> Kompakt ve Modüler Tasarım</li>
+                                   <li><i class="fas fa-check-circle"></i> Isıl İşlem Görmüş Yüksek Mukavemetli Çelik</li>
+                                   <li><i class="fas fa-check-circle"></i> Düşük Sürtünme Kaybı</li>
+                               </ul>
+
+                               <a href="{% url 'differential_detail' %}" class="btn-product">
+                                   <span>Detaylı Bilgi Al</span> <i class="fas fa-arrow-right"></i>
+                               </a>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+           </div>
+       </div>
+   </div>
+
+{% endblock %}

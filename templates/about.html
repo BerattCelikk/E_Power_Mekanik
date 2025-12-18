@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hakkımızda{% endblock %}
+
+{% block content %}
+
+   <style>
+       /* --- BANNER ARKA PLAN AYARLARI (TAM EKRAN) --- */
+       .banner-section {
+           background-image: url('{% static "images/slider1.jpeg" %}');
+           background-size: cover;
+           background-position: center center;
+           background-repeat: no-repeat;
+           position: relative;
+           /* Tam Ekran Yüksekliği */
+           height: 100vh; 
+           min-height: 700px;
+           display: flex;
+           align-items: center;
+           /* Navbar'ın altında kalmaması için üstten biraz boşluk */
+           padding-top: 80px; 
+       }
+
+       /* --- ÖZEL BANNER YAZI TASARIMI (SOLA HİZALI) --- */
+       .custom-banner-content {
+           display: flex;
+           flex-direction: column;
+           align-items: flex-start; /* Sola yasla */
+           justify-content: center;
+           line-height: 1.1;
+           margin-bottom: 30px;
+           padding-left: 15px; /* Container padding */
+       }
+
+       /* DOLU BEYAZ YAZI */
+       .title-solid-large {
+           font-size: 5rem; 
+           font-weight: 800; 
+           color: #fff; 
+           display: block;
+           text-transform: none; 
+           margin-bottom: 5px;
+       }
+
+       /* İÇİ BOŞ (OUTLINE) YAZI */
+       .title-outline-large {
+           font-size: 4.5rem; 
+           font-weight: 800; 
+           color: transparent; 
+           -webkit-text-stroke: 2px #fff; 
+           display: block;
+           text-transform: uppercase;
+           margin-bottom: 5px;
+       }
+       
+       /* ALT BAŞLIK (ÇÖZÜMLER) */
+       .title-solid-sub {
+           font-size: 4rem; 
+           font-weight: 800; 
+           color: #fff; 
+           display: block;
+           text-transform: uppercase;
+           margin-bottom: 20px;
+       }
+
+       /* AÇIKLAMA METNİ */
+       .banner-desc {
+           font-size: 1.2rem;
+           color: #ddd;
+           line-height: 1.6;
+           margin-top: 20px;
+           max-width: 700px;
+           text-align: left; /* Sola yaslı */
+           padding-left: 15px;
+       }
+       
+       /* Sosyal İkonlar */
+       .header-social-share {
+           position: absolute;
+           bottom: 50px;
+           right: 50px;
+           z-index: 10;
+       }
+       
+       /* Scroll İkonu */
+       .hero__scroll {
+           position: absolute;
+           bottom: 40px;
+           left: 50%;
+           transform: translateX(-50%);
+           z-index: 10;
+           animation: bounce 2s infinite;
+       }
+       @keyframes bounce {
+           0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+           40% {transform: translateY(-10px) translateX(-50%);}
+           60% {transform: translateY(-5px) translateX(-50%);}
+       }
+
+
+       /* --- İÇERİK KISMI ARKA PLAN AYARLARI --- */
+       .about-us {
+           background-image: url('{% static "images/slider2.png" %}');
+           background-size: cover;
+           background-position: center;
+           background-attachment: fixed;
+           position: relative;
+           padding: 100px 0;
+       }
+       .about-us::before {
+           content: '';
+           position: absolute;
+           top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.8);
+           z-index: 0;
+       }
+       .about-us .container { position: relative; z-index: 2; }
+
+       /* Yazı Renklerini Beyaz Yap */
+       .about-heading2-home, 
+       .about-heading2-home span,
+       .about-us p, 
+       .about-us strong,
+       .about-us li {
+           color: #fff !important;
+       }
+       .about-us i.far.fa-dot-circle { color: #fff !important; }
+
+       /* Video Alanı */
+       .simpleParallax-video iframe {
+           width: 100%;
+           height: 350px;
+           border-radius: 10px;
+           box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+       }
+
+       /* --- BUTON TASARIMI --- */
+       .about-us .btn-style1 {
+           background-color: transparent !important;
+           border: 2px solid #fff !important;
+           color: #fff !important;
+           padding: 12px 35px;
+           border-radius: 30px;
+           font-weight: 600;
+           display: inline-flex;
+           align-items: center;
+           transition: 0.3s all ease;
+           text-decoration: none;
+       }
+       .about-us .btn-style1 svg {
+           fill: #fff !important; margin-left: 10px; transition: 0.3s all ease;
+       }
+       .about-us .btn-style1:hover {
+           background-color: #fff !important; color: #000 !important;
+       }
+       .about-us .btn-style1:hover svg { fill: #000 !important; }
+
+
+       /* --- MOBİL UYUMLULUK (MEDIA QUERIES) --- */
+       @media (max-width: 991px) {
+           /* Banner Mobilde */
+           .banner-section { height: 100vh; justify-content: center; text-align: center; } /* Mobilde de tam ekran */
+           .custom-banner-content { 
+               align-items: center; /* Mobilde ortala */
+               text-align: center;
+               padding-left: 0;
+           }
+           .title-solid-large { font-size: 2.5rem !important; }
+           .title-outline-large { font-size: 2rem !important; }
+           .title-solid-sub { font-size: 2rem !important; }
+           .banner-desc { font-size: 1rem !important; padding: 0 15px; text-align: center; }
+           
+           .header-social-share { right: auto; width: 100%; text-align: center; bottom: 80px; }
+           .hero__scroll { bottom: 30px; }
+
+           /* İçerik Mobilde */
+           .about-us { padding: 60px 0; }
+           .row { display: flex; flex-direction: column; }
+           .col-md-5 { width: 100%; margin-bottom: 40px; }
+           .simpleParallax-video iframe { height: 250px; }
+           .col-md-7 { width: 100%; text-align: center; }
+           .about-heading2-home { font-size: 2rem !important; line-height: 1.3 !important; }
+           .about-us ul { text-align: left; display: inline-block; }
+           .about-us li { justify-content: flex-start; } 
+           .about-us .btn-style1 { margin-top: 20px; }
+       }
+   </style>
+
+   <div class="banner-section">
+        <div class="container">
+            
+            <div class="custom-banner-content">
+                <span class="title-solid-large">E-PM Hakkında</span>
+                
+                <div>
+                    <span class="title-outline-large">Geleceği Hareket</span>
+                    <br> <span class="title-solid-sub">Ettiren Çözümler</span>
+                </div>
+
+                <p class="banner-desc">
+                    E Power Mekanik A.Ş., elektrikli araçlar, savunma ve robotik sektörlerine yönelik güç aktarım sistemleri geliştiren bir firmadır. Şanzıman ve tahrik sistemleri üretimine odaklanmaktadır.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="header-social-share">
+            <ul>
+                <li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+        <a href="#" class="hero__scroll"><svg width="15" height="22.1"><use xlink:href="#arrow"></use></svg></a>
+   </div>
+
+   <div class="about-us light-section">
+       <div class="container">
+           <div class="row align-items-center">
+               
+               <div class="col-md-5">
+                   <div class="simpleParallax-video">
+                        <iframe 
+                            src="https://www.youtube-nocookie.com/embed/dQAVz8bNqQw" 
+                            title="E Power Mekanik - Futurelab Röportajı" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
+                   </div>
+               </div>
+
+               <div class="col-md-7">
+                   <h3 class="about-heading2-home" style="font-weight: 300; font-size: 2.5rem; line-height: 1.2; margin-bottom: 20px;">
+                       E Power Mekanik <span style="font-weight: 700;">Elektrikli <br> Araç Şanzımanı</span>
+                   </h3>
+
+                   <p style="margin-bottom: 20px;">
+                       <strong>E Power Mekanik A.Ş.,</strong> elektrikli araçlar, savunma ve robotik sektörlerine yönelik <strong>güç aktarım sistemleri</strong> geliştiren, ileri mühendislik odaklı bir teknoloji firmasıdır. Faaliyet alanımız; şanzımanlar, dişli kutuları ve tahrik sistemleri gibi kritik bileşenlerin tasarımı, mühendisliği ve üretimini kapsamaktadır.
+                   </p>
+                   
+                   <p style="margin-bottom: 20px;">
+                       Kuruluşumuzun temel amacı; <strong>yüksek verimli, dayanıklı ve test edilmiş ürünlerle,</strong> hem sektörlerin performans ihtiyacına yanıt vermek hem de bu alandaki teknolojik yetkinliği ülkemizde geliştirmektir.
+                   </p>
+
+                   <p style="margin-bottom: 10px;">Ürün ve çözümlerimiz;</p>
+                   <ul style="list-style: none !important; padding: 0; margin-bottom: 25px;">
+                       <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                           <i class="far fa-dot-circle" style="margin-right: 10px; font-size: 14px;"></i> Mühendislik optimizasyonu,
+                       </li>
+                       <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                           <i class="far fa-dot-circle" style="margin-right: 10px; font-size: 14px;"></i> Fonksiyonel tasarım,
+                       </li>
+                       <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                           <i class="far fa-dot-circle" style="margin-right: 10px; font-size: 14px;"></i> Üretilebilirlik odaklı yaklaşım,
+                       </li>
+                       <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                           <i class="far fa-dot-circle" style="margin-right: 10px; font-size: 14px;"></i> Sistem bütünlüğü prensipleriyle şekillenmektedir.
+                       </li>
+                   </ul>
+
+                   <p style="margin-bottom: 30px;">
+                       Ar-Ge altyapımız, üniversite iş birlikleri ve mühendislik ekosistemine sunduğumuz katkılar sayesinde, sadece ürün değil aynı zamanda <strong>bilgi, yetkinlik ve sürdürülebilir değer üretme</strong> vizyonunu da taşımaktayız.
+                   </p>
+
+                   <a href="{% url 'contact' %}" target="_self" class="btn btn-style1">
+                       <span>İletişime Geç</span>
+                       <svg width="11.4" height="9.2"> <use xlink:href="#arrow"></use></svg>
+                   </a>
+               </div>
+
+           </div>
+       </div>
+   </div>
+
+{% endblock %}

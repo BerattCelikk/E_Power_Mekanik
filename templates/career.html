@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Kariyer{% endblock %}
+
+{% block content %}
+
+   <style>
+       /* GENEL YAPI */
+       .career-main-content {
+           width: 100%;
+           overflow-x: hidden;
+       }
+
+       /* --- BANNER ARKA PLAN AYARI (HOME.HTML GİBİ DÜZELTİLDİ) --- */
+       .banner-section {
+           background-image: url('{% static "images/slider1.jpeg" %}');
+           background-size: cover;
+           background-position: center center;
+           background-repeat: no-repeat;
+           position: relative;
+           /* Yükseklik ve Ortalama İçin Flex Yapısı */
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           min-height: 600px; /* Home slider'a yakın bir yükseklik */
+           padding-top: 100px; /* Header payı */
+       }
+
+       /* Banner Yazı Tasarımı */
+       .custom-title-wrapper {
+           display: flex;
+           flex-direction: column;
+           align-items: flex-start;
+           justify-content: center;
+           line-height: 1.1;
+           margin-bottom: 30px;
+       }
+       .title-solid { font-size: 4.5rem; font-weight: 800; color: #fff; display: block; text-transform: none; }
+       .title-small { font-size: 2.5rem; font-weight: 600; color: #fff; display: block; margin: 5px 0; }
+       .title-outline { font-size: 4.5rem; font-weight: 800; color: transparent; -webkit-text-stroke: 2px #fff; display: block; text-transform: none; }
+       
+       .banner-desc { font-size: 1.1rem; color: #ddd; line-height: 1.6; max-width: 800px; margin-top: 20px; }
+
+       /* --- İÇERİK KISMI ARKA PLAN AYARLARI --- */
+       .about-us {
+           background-image: url('{% static "images/slider2.png" %}');
+           background-size: cover; background-position: center; background-attachment: fixed;
+           position: relative; padding: 100px 0;
+       }
+       .about-us::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 0;
+       }
+       .about-us .container { position: relative; z-index: 2; }
+
+       /* Yazı Renklerini Beyaz Yap */
+       .about-heading2-home, .about-us p { color: #fff !important; }
+
+       /* --- KARİYER KUTUSU (SİYAH ARKAPLAN KALDIRILDI) --- */
+       .career-box {
+           background-color: transparent; /* Siyah arkaplan kaldırıldı */
+           color: #fff; 
+           padding: 70px 50px; 
+           border-radius: 15px; 
+           text-align: center; 
+           position: relative; 
+           overflow: hidden; 
+           box-shadow: none; /* Gölge kaldırıldı */
+           height: 100%; 
+           display: flex; 
+           flex-direction: column; 
+           justify-content: center;
+       }
+
+       /* --- KARİYER FIRSATLARI --- */
+       .career-opportunities-section { background-color: #000; color: #fff; padding: 80px 0; }
+       .opp-box {
+           border: 1px solid #333; border-radius: 10px; padding: 40px 30px; height: 100%; transition: 0.3s; text-align: center; background-color: #050505; display: flex; flex-direction: column; justify-content: space-between;
+       }
+       .opp-box:hover { border-color: #fff; }
+       .opp-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: #fff; }
+       .opp-desc { font-size: 0.9rem; color: #999; margin-bottom: 30px; line-height: 1.5; }
+       .position-list { list-style: none; padding: 0; margin: 0 0 30px 0; text-align: left; display: inline-block; }
+       .position-list li { border-bottom: 1px solid #333; padding: 15px 0; font-size: 0.95rem; font-weight: 600; color: #fff; }
+       .position-list li:last-child { border-bottom: none; }
+       .link-btn {
+           color: #fff; text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid #fff; padding-bottom: 2px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; align-self: center;
+       }
+       .link-btn:hover { color: #ccc; border-color: #ccc; }
+
+       /* --- MOBİL AYARLARI --- */
+       @media (max-width: 991px) {
+           .banner-section { min-height: 500px; padding-top: 80px; text-align: center; }
+           .custom-title-wrapper { align-items: center; text-align: center; }
+           .title-solid, .title-outline { font-size: 2.5rem !important; }
+           .title-small { font-size: 1.5rem !important; }
+           .banner-desc { font-size: 1rem !important; margin: 20px auto 0; }
+           
+           .about-us, .career-opportunities-section { padding: 60px 0; }
+           .about-heading2-home, .about-us p { text-align: center; }
+           .col-md-6.mb-4 { margin-bottom: 40px !important; }
+           .about-heading2-home { font-size: 2.5rem !important; }
+           h2 { font-size: 2.5rem !important; }
+           .career-box { padding: 50px 30px !important; margin-top: 0; }
+           .opp-box { margin-bottom: 30px; height: auto; }
+           .col-md-6:last-child .opp-box { margin-bottom: 0; }
+       }
+   </style>
+
+   <div class="career-main-content">
+
+       <div class="banner-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12"> <div class="custom-title-wrapper">
+                            <span class="title-solid">Ekibimize Katılın</span>
+                            <span class="title-small">ve</span>
+                            <span class="title-outline">Geleceği</span>
+                            <span class="title-outline">Şekillendirin</span>
+                        </div>
+                        <p class="banner-desc">
+                            Makine, mekatronik, kontrol, elektrik-elektronik ve ilgili mühendislik alanlarında yetenekli profesyonelleri ekibimize davet ediyoruz. Güç aktarım sistemleri, test süreçleri, ileri üretim teknolojileri gibi alanlarda uzmanlaşarak kendinizi geliştirebilirsiniz.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-social-share">
+                <ul>
+                    <li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <a href="#" class="hero__scroll"><svg width="15" height="22.1"><use xlink:href="#arrow"></use></svg></a>
+       </div>
+
+       <div class="about-us light-section">
+           <div class="container">
+               <div class="row align-items-center">
+                   
+                   <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+                       <h3 class="about-heading2-home" style="font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 30px;">
+                           Bizimle çalışmak <br> ister misin?
+                       </h3>
+                       <p style="font-size: 1.1rem; margin-bottom: 20px; line-height: 1.6;">
+                           E-Power Mekanik olarak, yenilikçi ve dinamik ekibimize katılacak, geleceğin teknolojilerine yön verecek yetenekli arkadaşlar arıyoruz.
+                       </p>
+                       <p style="font-size: 1.1rem; line-height: 1.6;">
+                           Eğer sen de mühendislik tutkusuyla doluysan ve "Geleceğin Gücünü Tasarlamak" istiyorsan, tanışmak için sabırsızlanıyoruz.
+                       </p>
+                   </div>
+
+                   <div class="col-lg-6 col-md-12">
+                       <div class="career-box">
+                           <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('{% static 'images/pattern-1.png' %}'); opacity: 0.05;"></div>
+                           <div style="position: relative; z-index: 2;">
+                               <span style="text-transform: uppercase; letter-spacing: 2px; font-size: 13px; font-weight: 600; display: block; margin-bottom: 25px; color: #ccc;">Tanışmaya hazır mısın?</span>
+                               <h2 style="font-size: 3.5rem; font-weight: 800; margin-bottom: 40px; line-height: 1.1; color: #fff;">Hadi işe <br> koyulalım!</h2>
+                               <a href="mailto:info@epowermekanik.com" class="btn-style2" style="background-color: #000; border: 2px solid #fff; padding: 15px 35px; border-radius: 30px; color: #fff; text-decoration: none; font-weight: 600; transition: 0.3s; display: inline-flex; align-items: center;">
+                                   <span>CV Gönder</span>
+                                   <svg width="11.4" height="9.2" viewBox="0 0 12 10" style="margin-left: 10px; fill: currentColor;"><path d="M11.3 4.1L8.1.2c-.3-.2-.7-.3-1 0-.3.2-.3.6-.1.9l2.3 2.8H.7c-.4 0-.7.3-.7.7 0 .4.3.7.7.7h8.6L7 8c-.2.3-.2.8.1 1 .3.2.7.2 1-.1L11.3 5c.2-.3.2-.6 0-.9z"/></svg>
+                               </a>
+                               <div style="margin-top: 30px;">
+                                   <p style="font-size: 0.9rem; color: #999; margin: 0;">CV Gönderimi İçin:</p>
+                                   <a href="mailto:info@epowermekanik.com" style="color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1rem;">info@epowermekanik.com</a>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+               </div>
+           </div>
+       </div>
+
+       <div class="career-opportunities-section">
+           <div class="container">
+               
+               <div class="text-center" style="margin-bottom: 60px;">
+                   <h2 style="font-size: 3rem; font-weight: 700; margin-bottom: 20px;">En iyi <span style="font-weight: 300; color: #888;">Kariyer Fırsatları</span></h2>
+                   <p style="font-size: 1rem; color: #ccc; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+                       Geleceğin mühendisleri ve uzmanları için yenilikçi projelerimizde yer alma fırsatı! 
+                       Eğer teknik becerilerinizi geliştirmek, profesyonel bir ekiple çalışmak ve kariyerinizde ileriye gitmek istiyorsanız, doğru yerdesiniz.
+                   </p>
+               </div>
+
+               <div class="row">
+                   <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+                       <div class="opp-box">
+                           <div>
+                               <h3 class="opp-title">Stajyer / Aday Mühendis <br> Başvuruları</h3>
+                               <p class="opp-desc">Yeni nesil mühendis adaylarını destekliyoruz! Staj programlarımız, üniversite öğrencilerinin gerçek projelerde deneyim kazanmasını sağlar.</p>
+                               <ul class="position-list">
+                                   <li>Güç Aktarım Sistemleri Tasarımı</li>
+                                   <li>Test ve Doğrulama Çalışmaları</li>
+                                   <li>İleri Üretim Teknolojileri</li>
+                               </ul>
+                           </div>
+                           <a href="mailto:info@epowermekanik.com" class="link-btn">İLETİŞİM ↗</a>
+                       </div>
+                   </div>
+
+                   <div class="col-lg-6 col-md-12">
+                       <div class="opp-box">
+                           <div>
+                               <h3 class="opp-title">Profesyonel Kariyer Planı</h3>
+                               <p class="opp-desc">Dişli ve güç aktarım teknolojileri üzerine uzmanlaşmış yenilikçi projelerimiz için yetenekli profesyoneller arıyoruz. Aşağıdaki pozisyonlarda ekibimize katılabilirsiniz:</p>
+                               <ul class="position-list">
+                                   <li>Dişli Metot Mühendisi</li>
+                                   <li>Dişli Kalite Kontrol Mühendisi</li>
+                                   <li>CMM Operatörü</li>
+                                   <li>Dişli Üretim Sorumlusu</li>
+                                   <li>Dişli Üretim Operatörü</li>
+                                   <li>Cam Uzmanı</li>
+                                   <li>Proje Sorumlusu</li>
+                               </ul>
+                           </div>
+                           <a href="mailto:info@epowermekanik.com" class="link-btn">İLETİŞİM ↗</a>
+                       </div>
+                   </div>
+               </div>
+
+           </div>
+       </div>
+
+   </div>
+
+{% endblock %}

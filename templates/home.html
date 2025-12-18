@@ -1,0 +1,357 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ana Sayfa{% endblock %}
+
+{% block content %}
+
+    <style>
+        /* GENEL AYARLAR */
+        .video-container, .gif-container {
+            position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 10px;
+        }
+        .video-container video, .video-container img, .gif-container img {
+            width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease;
+        }
+        .gif-container img {
+            height: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- SLIDER TAM EKRAN AYARI --- */
+        .slider-inner-venor { 
+            background-size: cover; 
+            background-position: center center; 
+            background-repeat: no-repeat;
+            position: relative;
+            /* Tam ekran yüksekliği */
+            height: 100vh; 
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            padding-top: 80px; /* Header boşluğu */
+        }
+
+        /* --- SLIDER ÖZEL YAZI TASARIMI --- */
+        .custom-slider-title {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Sola yasla */
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+        
+        .title-solid {
+            font-size: 4.5rem; 
+            font-weight: 800; 
+            color: #fff; 
+            display: block;
+            text-transform: none; 
+        }
+        
+        .title-outline {
+            font-size: 4.5rem; 
+            font-weight: 800; 
+            color: transparent; 
+            -webkit-text-stroke: 1.5px #fff; /* İnce beyaz çerçeve */
+            display: block;
+            text-transform: none;
+        }
+        
+        /* Slider Açıklama Metni */
+        .slider-body p {
+            font-size: 1.2rem;
+            color: #ddd;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 700px;
+        }
+
+        /* --- HAKKIMIZDA BÖLÜMÜ ARKA PLAN AYARI --- */
+        .about-section {
+            background-image: url('{% static "images/slider2.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            padding: 100px 0;
+        }
+
+        /* Siyah Perde */
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Hafif karartma */
+            z-index: 0;
+        }
+
+        .about-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Yazıları Beyaz Yap */
+        .about-heading1-home, 
+        .about-heading1-home strong, 
+        .about-heading2-home, 
+        .about-section p,
+        .about-section li {
+            color: #fff !important;
+        }
+
+        /* Yıllık Tecrübe Yazılarını da Beyaz Yap */
+        .nmb-font-about, .service_summary-about {
+            color: #fff !important;
+        }
+
+        /* Liste elemanları için stil */
+        .about-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .about-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .about-list li i {
+            margin-right: 10px;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        /* --- DAHA FAZLA BUTONU ÖZELLEŞTİRME (BEYAZ YAZI) --- */
+        .about-section .btn-style1 {
+            background-color: transparent !important;
+            border: 2px solid #fff !important;
+            color: #fff !important;
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: 0.3s all ease;
+            margin-top: 20px;
+        }
+        
+        .about-section .btn-style1 svg {
+            fill: #fff !important;
+            margin-left: 10px;
+            transition: 0.3s all ease;
+        }
+
+        .about-section .btn-style1:hover {
+            background-color: #fff !important;
+            color: #000 !important;
+            text-decoration: none;
+        }
+        
+        .about-section .btn-style1:hover svg {
+            fill: #000 !important;
+        }
+
+
+        /* --- HOVER EFEKTİ --- */
+        .item-about-img1, .item-about-img2 .avo-image {
+            position: relative;
+            overflow: visible;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .hover-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: right;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease-in-out;
+            z-index: 10;
+            pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+
+        .hover-overlay h4 {
+            font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin: 0; letter-spacing: 0.5px; color: #fff; line-height: 1.2;
+        }
+        .hover-overlay span {
+            font-size: 0.65rem; color: #ccc; display: block; margin-top: 3px; text-transform: uppercase; font-weight: 400;
+        }
+
+        .item-about-img1:hover .hover-overlay, 
+        .item-about-img2 .avo-image:hover .hover-overlay {
+            opacity: 1; transform: translateY(0);
+        }
+        
+        .item-about-img1:hover video, 
+        .item-about-img2 .avo-image:hover video,
+        .item-about-img2 .avo-image:hover img {
+            transform: scale(1.03);
+        }
+
+
+        /* SLIDER & MOBİL AYARLARI */
+        .slider-inner-venor { background-size: cover; background-position: center; }
+        
+        @media (max-width: 991px) {
+            .slider-inner-venor { 
+                height: 100vh; 
+                display: flex !important; 
+                align-items: center; 
+                justify-content: center; 
+                text-align: center; 
+            }
+            /* Slider Yazılarını Mobilde Küçült ve Ortala */
+            .custom-slider-title { align-items: center; }
+            .title-solid, .title-outline { font-size: 2.2rem !important; }
+            
+            .slider-content h1 { font-size: 2rem !important; line-height: 1.2; }
+            .slider-content h2 { font-size: 1.2rem !important; margin: 10px 0; }
+            .slider-body p { font-size: 1rem !important; margin: 0 auto 20px auto; }
+            .button-slider-b { display: flex; justify-content: center; margin-top: 15px; }
+            
+            /* Hakkımızda Mobil Hizalama */
+            .about-section { padding: 50px 0; }
+            .about-section .row { display: flex; flex-direction: column; }
+            
+            /* Metin Alanı Mobilde */
+            .about-section .col-md-6:last-child {
+                width: 100%;
+                margin-top: 30px;
+                text-align: center;
+            }
+            /* Resim Alanı Mobilde */
+            .about-section .col-md-6:first-child {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .item-about-img2, .item-about-img1 { margin-bottom: 20px; }
+            .item-about-img2 .avo-image { margin-bottom: 20px; }
+
+            /* Mobilde Butonu Ortala */
+            .about-section .btn-style1 { margin: 20px auto 0; display: inline-flex; }
+        }
+    </style>
+
+    <div class="slider-venor-section">
+        <div class="slider-venor owl-carousel">
+            
+            <div class="slider-inner-venor" data-background-image-url="{% static 'images/slider1.jpeg' %}">
+                <div class="container">
+                    <div class="slider-content">
+                        
+                        <div class="custom-slider-title">
+                            <span class="title-solid">Geleceğin Gücünü</span>
+                            <span class="title-solid">Tasarlıyoruz</span>
+                            <span class="title-outline">Yenilikçi Şanzıman</span>
+                            <span class="title-outline">Mühendisliği</span>
+                        </div>
+
+                        <div class="slider-body active"><p>Elektrikli araçlar için ileri teknolojiyle geliştirilmiş, yerli ve yüksek performanslı güç aktarım sistemleri.</p></div>
+                        <div class="button-slider-b">
+                            <a href="{% url 'contact' %}" target="_self" class="btn btn-slider"><span>Bize Ulaşın</span> <svg width="11.4" height="9.2"><use xlink:href="#arrow"></use></svg></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-inner-venor" data-background-image-url="{% static 'images/slider1.jpeg' %}">
+                <div class="container">
+                    <div class="slider-content">
+                        <h1>Milli Teknoloji</h1>
+                        <h2>Yerli Üretim</h2>
+                        <div class="slider-body"><p>Ülkemizin teknolojik bağımsızlığına katkı sağlayan mühendislik çözümleri.</p></div>
+                        <div class="button-slider-b">
+                            <a href="{% url 'about' %}" target="_self" class="btn btn-slider"><span>İncele</span> <svg width="11.4" height="9.2"><use xlink:href="#arrow"></use></svg></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="header-social-share">
+            <ul><li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li></ul>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="item-about">
+                        <div class="item-about-row">
+                            
+                            <div class="item-about-img2">
+                                <div class="avo-image about-img3 big-paral" style="margin-bottom: 20px;">
+                                    <div class="gif-container">
+                                        <img src="{% static 'images/mainepm3.png' %}" alt="about-3-gif" class="img-fluid">
+                                    </div>
+                                    <div class="hover-overlay">
+                                        <h4>Hassas Üretim</h4>
+                                        <span>İmalat Yöntem ve Prosesler</span>
+                                    </div>
+                                </div>
+
+                                <div class="avo-image about-img2 big-paral">
+                                    <div class="video-container">
+                                        <video autoplay muted loop playsinline class="img-fluid">
+                                            <source src="{% static 'images/about2.mp4' %}" type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="hover-overlay">
+                                        <h4>Sistem Analizleri</h4>
+                                        <span>Optimizasyon</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="item-about-img1">
+                                <div class="video-container">
+                                    <video autoplay muted loop playsinline class="img-fluid">
+                                        <source src="{% static 'images/about1.mp4' %}" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="hover-overlay">
+                                    <h4>Dişli Kutusu Tasarımları</h4>
+                                    <span>Yüksek Dayanım, Düşük Boşluk</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="exp-about">
+                            <h5 class="nmb-font-about">10+</h5>
+                            <h6 class="service_summary-about">Yıllık Tecrübe</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h4 class="about-heading1-home"><strong>E-Power Mekanik</strong></h4>
+                    <h3 class="about-heading2-home">İLERİ MÜHENDİSLİK <br> YÜKSEK VERİMLİLİK</h3>
+                    
+                    <p>E-Power Mekanik, millileştirme süreci kapsamında, yerel tasarım ve yerel tedarikçilerle iş birliği yaparak ülkemizin teknolojik ve endüstriyel kapasitesini arttırmaktadır.</p>
+                    <p>Bu hedef doğrultusunda, mühendislik gücümüzü yerli şanzıman üretimine odaklayarak, araçlarımızda tam anlamıyla milli bir çözüm sunmayı planlıyoruz.</p>
+                    
+                    <ul class="about-list">
+                        <li><i class="far fa-dot-circle"></i> İhtiyaca uygun, özel elektrikli araç şanzıman tasarımı</li>
+                        <li><i class="far fa-dot-circle"></i> Güç aktarım organları için hassasiyet, dayanıklılık ve yüksek performans odaklı Ar-Ge ve Ür-Ge</li>
+                        <li><i class="far fa-dot-circle"></i> Her projede güvenilirlik ve mükemmeliyeti sağlamak için yenilikçi mühendislik çözümleri</li>
+                    </ul>
+
+                    <a href="{% url 'about' %}" target="_self" class="btn btn-style1">
+                        <span>Daha Fazla</span> <svg width="11.4" height="9.2"> <use xlink:href="#arrow"></use></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

@@ -1,21 +1,26 @@
-"""epower_project URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from core import views  # Core uygulamasındaki views dosyasını çağırıyoruz
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', views.home, name='home'),             # İşte sihirli satır: Boş sayfaya gelince home çalışsın
+    path('hakkimizda/', views.about, name='about'),
+    path('iletisim/', views.contact, name='contact'),
+    path('kariyer/', views.career, name='career'),
+    path('kvkk/', views.kvkk, name='kvkk'),
+    path('sartlar-ve-kosullar/', views.terms, name='terms'),
+    path('gizlilik-politikasi/', views.privacy, name='privacy'),
+    path('urunler/', views.products, name='products'),
+    path('haberler/', views.news, name='news'),
+    path('haberler/<slug:slug>/', views.news_detail, name='news_detail'),
+    path('hizmetler/', views.services, name='services'),
+    path('urunler/disli-kutusu/', views.gearbox_detail, name='gearbox_detail'),
+    path('urunler/diferansiyel/', views.differential_detail, name='differential_detail'),
+    ]
+
+# Resimlerin çalışması için:
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

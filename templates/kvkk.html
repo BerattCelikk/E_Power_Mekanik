@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}KVKK Aydınlatma Metni - E-Power Mekanik{% endblock %}
+
+{% block content %}
+
+   <style>
+       /* --- GENEL AYARLAR --- */
+       :root {
+           --primary-red: #d32f2f;
+           --dark-bg: #000;
+           --glass-bg: rgba(255, 255, 255, 0.05);
+           --glass-border: rgba(255, 255, 255, 0.1);
+       }
+
+       .kvkk-main-content {
+           width: 100%;
+           overflow-x: hidden;
+           background-color: var(--dark-bg);
+           color: #fff;
+           font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+       }
+
+       /* --- 1. BANNER BÖLÜMÜ (HOME GİBİ TAM EKRAN) --- */
+       .banner-section {
+           background-image: url('{% static "images/slider1.jpeg" %}');
+           background-size: cover;
+           background-position: center center;
+           background-repeat: no-repeat;
+           position: relative;
+           height: 100vh;
+           min-height: 700px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding-top: 100px;
+       }
+       
+       /* Banner Overlay (Hafif Karartma) */
+       .banner-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.4);
+           z-index: 0;
+       }
+       .banner-section .container { position: relative; z-index: 2; }
+
+       /* Banner Yazıları */
+       .custom-title-wrapper {
+           display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+           line-height: 1.1; margin-bottom: 30px; padding-left: 15px; border-left: 5px solid var(--primary-red);
+       }
+       .title-solid { 
+           font-size: 4.5rem; font-weight: 800; color: #fff; display: block; margin-bottom: 5px; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+       }
+       .title-outline { 
+           font-size: 4.5rem; font-weight: 800; color: transparent; -webkit-text-stroke: 1.5px #fff; display: block; 
+           text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+       }
+       .banner-desc { 
+           font-size: 1.2rem; color: #fff; line-height: 1.6; max-width: 700px; margin-top: 20px; padding-left: 20px; text-align: left; font-weight: 500;
+           text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+       }
+       
+       .header-social-share { position: absolute; bottom: 50px; right: 50px; z-index: 10; }
+
+       /* --- 2. İÇERİK BÖLÜMÜ (SLIDER2 ARKA PLAN) --- */
+       .kvkk-body-section {
+           position: relative;
+           padding: 120px 0;
+           background-image: url('{% static "images/slider2.png" %}');
+           background-size: cover;
+           background-position: center;
+           background-attachment: fixed; /* Parallax Etkisi */
+       }
+
+       /* Koyu Cam Perde */
+       .kvkk-body-section::before {
+           content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+           background: rgba(0, 0, 0, 0.85); /* Arka planı iyice karart */
+           backdrop-filter: blur(5px);
+           z-index: 0;
+       }
+       .kvkk-body-section .container { position: relative; z-index: 2; }
+
+       /* Glassmorphism KVKK Kutusu */
+       .kvkk-glass-card {
+           background: var(--glass-bg);
+           border: 1px solid var(--glass-border);
+           border-radius: 25px;
+           padding: 80px 60px;
+           box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+           backdrop-filter: blur(10px);
+           -webkit-backdrop-filter: blur(10px);
+       }
+
+       .kvkk-title-main {
+           font-weight: 800; font-size: 2.5rem; color: #fff; margin-bottom: 40px;
+           border-bottom: 2px solid var(--primary-red); display: inline-block; padding-bottom: 10px;
+       }
+
+       .kvkk-sub-title {
+           font-weight: 700; color: var(--primary-red); margin-top: 40px; margin-bottom: 20px;
+           text-transform: uppercase; letter-spacing: 1px; font-size: 1.2rem;
+       }
+
+       .kvkk-text {
+           color: #ccc; line-height: 1.8; font-size: 1.1rem; margin-bottom: 20px;
+       }
+
+       .kvkk-footer-info {
+           margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--glass-border);
+           font-style: italic; color: #888; font-size: 0.95rem;
+       }
+
+       /* --- MOBİL AYARLARI --- */
+       @media (max-width: 991px) {
+           .banner-section { min-height: 500px; text-align: center; }
+           .custom-title-wrapper { align-items: center; text-align: center; padding-left: 0; border-left: none; }
+           .title-solid, .title-outline { font-size: 2.5rem !important; }
+           .banner-desc { font-size: 1rem !important; padding: 0 15px; }
+           
+           .kvkk-body-section { padding: 60px 0; }
+           .kvkk-glass-card { padding: 40px 25px; }
+           .kvkk-title-main { font-size: 1.8rem; }
+       }
+   </style>
+
+   <div class="kvkk-main-content">
+
+       <div class="banner-section">
+            <div class="container">
+                <div class="custom-title-wrapper">
+                    <span class="title-solid">KVKK</span>
+                    <span class="title-outline">Aydınlatma</span>
+                    <span class="title-outline">Metni</span>
+                </div>
+                <p class="banner-desc">
+                    Verilerinizin güvenliği bizim önceliğimizdir. Kişisel Verilerin Korunması Kanunu kapsamında haklarınızı ve sorumluluklarımızı inceleyin.
+                </p>
+            </div>
+            
+            <div class="header-social-share">
+                <ul>
+                    <li><a href="https://www.linkedin.com/company/epowermekanik/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <a href="#" class="hero__scroll"><svg width="15" height="22.1"><use xlink:href="#arrow"></use></svg></a>
+       </div>
+
+       <div class="kvkk-body-section">
+           <div class="container">
+               <div class="row justify-content-center">
+                   <div class="col-lg-10">
+                       
+                       <div class="kvkk-glass-card">
+                           <h2 class="kvkk-title-main">Kişisel Verilerin Korunması</h2>
+                           
+                           <p class="kvkk-text">
+                               E-Power Mekanik A.Ş. olarak, kişisel verilerinizin güvenliği hususuna azami hassasiyet göstermekteyiz. Bu bilinçle, ürün ve hizmetlerimizden faydalanan kişiler dahil, Şirketimiz ile ilişkili tüm şahıslara ait her türlü kişisel verinin 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVK Kanunu”)’na uygun olarak işlenerek, muhafaza edilmesine büyük önem atfetmekteyiz.
+                           </p>
+
+                           <h3 class="kvkk-sub-title">1. Kişisel Verilerin Toplanması ve İşleme Amaçları</h3>
+                           <p class="kvkk-text">
+                               Kişisel verileriniz, Şirketimiz tarafından sağlanan hizmet ve ticari faaliyetlerinize bağlı olarak değişkenlik gösterebilmekle birlikte; otomatik ya da otomatik olmayan yöntemlerle, Şirketimiz birimleri ve ofisler, internet sitesi, sosyal medya mecraları ve benzeri vasıtalarla sözlü, yazılı ya da elektronik olarak toplanabilecektir.
+                           </p>
+
+                           <h3 class="kvkk-sub-title">2. Kişisel Verilerin Aktarılması</h3>
+                           <p class="kvkk-text">
+                               Toplanan kişisel verileriniz; Şirketimiz tarafından sunulan ürün ve hizmetlerden sizleri faydalandırmak için gerekli çalışmaların iş birimlerimiz tarafından yapılması, Şirketimizle iş ilişkisi içerisinde olan kişilerin hukuki ve ticari güvenliğinin temini amaçlarıyla iş ortaklarımıza, tedarikçilerimize ve kanunen yetkili kamu kurumlarına aktarılabilecektir.
+                           </p>
+
+                           <h3 class="kvkk-sub-title">3. Veri Sahibinin Hakları</h3>
+                           <p class="kvkk-text">
+                               KVK Kanunu’nun 11. maddesi uyarınca veri sahipleri; kişisel veri işlenip işlenmediğini öğrenme, kişisel verileri işlenmişse buna ilişkin bilgi talep etme, kişisel verilerin işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme haklarına sahiptir.
+                           </p>
+
+                           <div class="kvkk-footer-info">
+                               * Bu metin bilgilendirme amaçlıdır. Detaylı bilgi veya talepleriniz için 
+                               <a href="mailto:info@epowermekanik.com" style="color: var(--primary-red); font-weight: 700; text-decoration: none;">info@epowermekanik.com</a> 
+                               adresinden bizimle iletişime geçebilirsiniz.
+                           </div>
+                       </div>
+
+                   </div>
+               </div>
+           </div>
+       </div>
+
+   </div>
+
+{% endblock %}

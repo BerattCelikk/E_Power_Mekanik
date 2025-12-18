@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}E-Power Dişli Kutusu - Teknik Detaylar{% endblock %}
+
+{% block content %}
+<style>
+    /* --- CSS AYARLARI --- */
+    :root {
+        --primary-red: #d32f2f;
+        --glass-bg: rgba(20, 20, 20, 0.7); /* Daha koyu cam */
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --neon-glow: 0 0 30px rgba(211, 47, 47, 0.5);
+    }
+
+    /* Tam Ekran Arka Plan */
+    .detail-hero {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        background-image: url('{% static "images/slider2.png" %}');
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 0; /* Üst/Alt boşluk */
+        overflow: hidden;
+    }
+
+    /* Koyu Sinematik Perde */
+    .detail-hero::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, #000 90%);
+        z-index: 1;
+    }
+
+    /* Geniş Konteyner Ayarı */
+    .content-wrapper {
+        position: relative; z-index: 2; width: 100%;
+        max-width: 1600px; /* Standart container'dan çok daha geniş */
+        padding: 0 30px;
+    }
+
+    /* Glass Panel (Devasa) */
+    .glass-container {
+        background: var(--glass-bg);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px; /* Daha yuvarlak köşeler */
+        padding: 80px; /* İç boşluk artırıldı */
+        box-shadow: 0 60px 120px rgba(0,0,0,0.9);
+        animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    /* Sol Taraf: Tipografi */
+    .product-label {
+        font-size: 1.2rem; letter-spacing: 5px; color: var(--primary-red);
+        text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 15px;
+        animation: slideInLeft 1s 0.2s forwards; opacity: 0;
+    }
+
+    .main-title {
+        font-size: 5.5rem; /* Başlık devasa yapıldı */
+        font-weight: 900; line-height: 0.95; color: #fff; margin-bottom: 30px;
+        text-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        animation: slideInLeft 1s 0.4s forwards; opacity: 0;
+    }
+    .main-title span { color: transparent; -webkit-text-stroke: 3px #fff; }
+
+    .main-desc {
+        font-size: 1.4rem; color: #ddd; line-height: 1.7; margin-bottom: 50px; max-width: 95%;
+        animation: slideInLeft 1s 0.6s forwards; opacity: 0;
+        font-weight: 300;
+    }
+
+    /* Teknik Grid (Genişletilmiş) */
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px; /* Boşluklar artırıldı */
+        margin-bottom: 50px;
+        animation: fadeIn 1.5s 0.8s forwards; opacity: 0;
+    }
+
+    .tech-item {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.05);
+        padding: 25px 30px;
+        border-radius: 20px;
+        transition: 0.4s;
+    }
+    .tech-item:hover {
+        background: rgba(211, 47, 47, 0.15);
+        border-color: var(--primary-red);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .tech-label-small {
+        font-size: 0.9rem; text-transform: uppercase; color: #999; display: block; margin-bottom: 8px; font-weight: 700; letter-spacing: 1px;
+    }
+    .tech-value-large {
+        font-family: 'Courier New', monospace; font-size: 1.8rem; color: #fff; font-weight: 700;
+    }
+    .tech-value-large i { color: var(--primary-red); font-size: 1.2rem; vertical-align: middle; margin-left: 8px; }
+
+    /* Sağ Taraf: Medya */
+    .media-container {
+        animation: zoomIn 1.2s 0.5s forwards; opacity: 0; transform: scale(0.9);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .video-frame {
+        border-radius: 30px; overflow: hidden;
+        border: 2px solid rgba(255,255,255,0.1);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        transition: 0.5s;
+        margin-bottom: 40px;
+    }
+    .video-frame:hover {
+        border-color: var(--primary-red);
+        box-shadow: var(--neon-glow);
+        transform: scale(1.02);
+    }
+
+    .detail-img {
+        width: 100%; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+        opacity: 0.9; transition: 0.5s;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .detail-img:hover { opacity: 1; transform: translateY(-10px); border-color: #fff; }
+
+    /* Buton */
+    .btn-glow {
+        padding: 22px 60px; font-size: 1.2rem; font-weight: 700; color: #fff;
+        background: var(--primary-red); border-radius: 60px; text-decoration: none;
+        display: inline-flex; align-items: center; transition: 0.3s;
+        box-shadow: 0 15px 40px rgba(211, 47, 47, 0.4);
+        text-transform: uppercase; letter-spacing: 2px;
+        animation: fadeInUp 1s 1s forwards; opacity: 0;
+    }
+    .btn-glow:hover {
+        background: #fff; color: #000; box-shadow: 0 20px 50px rgba(255,255,255,0.5); transform: translateY(-5px);
+    }
+    .btn-glow i { margin-right: 15px; }
+
+    /* Animasyonlar */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(80px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes zoomIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Mobil */
+    @media (max-width: 1200px) {
+        .main-title { font-size: 4rem; }
+        .glass-container { padding: 50px; }
+    }
+    @media (max-width: 991px) {
+        .glass-container { padding: 30px 20px; }
+        .main-title { font-size: 3rem; }
+        .tech-grid { grid-template-columns: 1fr; }
+        .detail-hero { padding: 100px 0; height: auto; }
+        .tech-value-large { font-size: 1.3rem; }
+    }
+</style>
+
+<div class="detail-hero">
+    <div class="container-fluid content-wrapper">
+        <div class="glass-container">
+            <div class="row align-items-center">
+                
+                <div class="col-lg-6 mb-5 mb-lg-0 px-lg-5">
+                    <span class="product-label">Güç Aktarım Sistemleri</span>
+                    
+                    <h1 class="main-title">
+                        E-POWER <br>
+                        <span>DİŞLİ KUTUSU</span>
+                    </h1>
+                    
+                    <p class="main-desc">
+                        Elektrikli araçların ihtiyaç duyduğu yüksek torku, sessiz ve verimli bir şekilde tekerleklere iletmek için tasarlanmış yeni nesil yerli mühendislik harikası.
+                    </p>
+
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <span class="tech-label-small">Maksimum Tork</span>
+                            <div class="tech-value-large">450 Nm <i class="fas fa-bolt"></i></div>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-label-small">Tahvil Oranı</span>
+                            <div class="tech-value-large">9.56:1 <i class="fas fa-cog"></i></div>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-label-small">Maksimum Devir</span>
+                            <div class="tech-value-large">12.000 <span style="font-size:1rem;">RPM</span></div>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-label-small">Sistem Verimliliği</span>
+                            <div class="tech-value-large">%98+ <i class="fas fa-check-circle"></i></div>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-label-small">Ağırlık (Yağsız)</span>
+                            <div class="tech-value-large">18 kg <i class="fas fa-weight-hanging"></i></div>
+                        </div>
+                        <div class="tech-item">
+                            <span class="tech-label-small">Soğutma Tipi</span>
+                            <div class="tech-value-large">Sıvı/Pasif</div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'contact' %}" class="btn-glow">
+                        <i class="fas fa-file-download"></i> Teknik Dosya İste
+                    </a>
+                </div>
+
+                <div class="col-lg-6 px-lg-5">
+                    <div class="media-container">
+                        <div class="video-frame">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID?rel=0&showinfo=0&autoplay=0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="{% static 'images/slider1.jpeg' %}" class="detail-img" alt="Dişli Kutusu Detay">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
